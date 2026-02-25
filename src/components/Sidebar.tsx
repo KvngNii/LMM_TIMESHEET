@@ -13,12 +13,14 @@ import {
   ChevronLeft,
   ChevronRight,
   Timer,
+  ListTodo,
 } from "lucide-react";
 
 const navItems: { page: Page; label: string; icon: typeof LayoutDashboard }[] = [
   { page: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { page: "clock", label: "Clock In/Out", icon: Clock },
   { page: "timesheets", label: "Timesheets", icon: CalendarDays },
+  { page: "tasks", label: "Task Log", icon: ListTodo },
   { page: "employees", label: "Employees", icon: Users },
   { page: "reports", label: "Reports", icon: BarChart3 },
   { page: "settings", label: "Settings", icon: Settings },

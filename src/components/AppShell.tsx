@@ -7,6 +7,7 @@ import Header from "./Header";
 import DashboardPage from "./DashboardPage";
 import ClockPage from "./ClockPage";
 import TimesheetsPage from "./TimesheetsPage";
+import TaskLogPage from "./TaskLogPage";
 import EmployeesPage from "./EmployeesPage";
 import ReportsPage from "./ReportsPage";
 import SettingsPage from "./SettingsPage";
@@ -15,6 +16,7 @@ const pages: Record<string, React.ComponentType> = {
   dashboard: DashboardPage,
   clock: ClockPage,
   timesheets: TimesheetsPage,
+  tasks: TaskLogPage,
   employees: EmployeesPage,
   reports: ReportsPage,
   settings: SettingsPage,

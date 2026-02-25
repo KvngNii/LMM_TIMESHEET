@@ -32,6 +32,31 @@ export interface ClockSession {
   project: string;
 }
 
+export interface TaskLog {
+  id: string;
+  employeeId: string;
+  date: string;
+  taskName: string;
+  description: string;
+  project: string;
+  duration: number; // in minutes
+  category: TaskCategory;
+  status: "in-progress" | "completed";
+  createdAt: string;
+}
+
+export type TaskCategory =
+  | "Design"
+  | "Development"
+  | "Meeting"
+  | "Research"
+  | "Content Creation"
+  | "Client Communication"
+  | "Strategy"
+  | "Review"
+  | "Admin"
+  | "Other";
+
 export interface DashboardStats {
   totalEmployees: number;
   activeToday: number;
@@ -45,6 +70,7 @@ export type Page =
   | "dashboard"
   | "clock"
   | "timesheets"
+  | "tasks"
   | "employees"
   | "reports"
   | "settings";

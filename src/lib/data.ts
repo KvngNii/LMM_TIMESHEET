@@ -1,4 +1,4 @@
-import { Employee, TimeEntry } from "./types";
+import { Employee, TimeEntry, TaskLog, TaskCategory } from "./types";
 
 export const employees: Employee[] = [
   {
@@ -209,3 +209,95 @@ export const projects = [
   "Q1 Strategy Review",
   "Website Redesign",
 ];
+
+export const taskCategories: TaskCategory[] = [
+  "Design",
+  "Development",
+  "Meeting",
+  "Research",
+  "Content Creation",
+  "Client Communication",
+  "Strategy",
+  "Review",
+  "Admin",
+  "Other",
+];
+
+function generateTaskLogs(): TaskLog[] {
+  const logs: TaskLog[] = [];
+  const taskTemplates: { name: string; category: TaskCategory; minDuration: number; maxDuration: number }[] = [
+    { name: "Design social media graphics", category: "Design", minDuration: 30, maxDuration: 120 },
+    { name: "Write blog post draft", category: "Content Creation", minDuration: 60, maxDuration: 180 },
+    { name: "Client strategy call", category: "Client Communication", minDuration: 30, maxDuration: 60 },
+    { name: "Review campaign analytics", category: "Review", minDuration: 20, maxDuration: 60 },
+    { name: "Team standup meeting", category: "Meeting", minDuration: 15, maxDuration: 30 },
+    { name: "SEO keyword research", category: "Research", minDuration: 45, maxDuration: 90 },
+    { name: "Update brand guidelines doc", category: "Admin", minDuration: 30, maxDuration: 60 },
+    { name: "Create campaign strategy deck", category: "Strategy", minDuration: 60, maxDuration: 150 },
+    { name: "Edit video content", category: "Content Creation", minDuration: 45, maxDuration: 120 },
+    { name: "Build landing page", category: "Development", minDuration: 60, maxDuration: 240 },
+    { name: "Client feedback review", category: "Review", minDuration: 20, maxDuration: 45 },
+    { name: "Competitor analysis", category: "Research", minDuration: 30, maxDuration: 90 },
+    { name: "Sprint planning session", category: "Meeting", minDuration: 45, maxDuration: 90 },
+    { name: "Design email template", category: "Design", minDuration: 30, maxDuration: 90 },
+    { name: "Write ad copy variations", category: "Content Creation", minDuration: 20, maxDuration: 60 },
+    { name: "Update project timeline", category: "Admin", minDuration: 15, maxDuration: 30 },
+    { name: "A/B test setup", category: "Development", minDuration: 30, maxDuration: 60 },
+    { name: "Quarterly review presentation", category: "Strategy", minDuration: 60, maxDuration: 120 },
+    { name: "Client onboarding call", category: "Client Communication", minDuration: 45, maxDuration: 90 },
+    { name: "Social media scheduling", category: "Content Creation", minDuration: 20, maxDuration: 45 },
+  ];
+
+  const today = new Date();
+  for (let dayOffset = 0; dayOffset < 14; dayOffset++) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - dayOffset);
+    const dateStr = date.toISOString().split("T")[0];
+    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+
+    for (const emp of employees) {
+      if (emp.status === "inactive") continue;
+      if (isWeekend && Math.random() > 0.1) continue;
+
+      const taskCount = 2 + Math.floor(Math.random() * 4);
+      const usedTasks = new Set<number>();
+
+      for (let t = 0; t < taskCount; t++) {
+        let taskIdx: number;
+        do {
+          taskIdx = Math.floor(Math.random() * taskTemplates.length);
+        } while (usedTasks.has(taskIdx) && usedTasks.size < taskTemplates.length);
+        usedTasks.add(taskIdx);
+
+        const template = taskTemplates[taskIdx];
+        const duration =
+          template.minDuration +
+          Math.floor(Math.random() * (template.maxDuration - template.minDuration));
+        const project = projects[Math.floor(Math.random() * projects.length)];
+
+        logs.push({
+          id: `tl-${emp.id}-${dateStr}-${t}`,
+          employeeId: emp.id,
+          date: dateStr,
+          taskName: template.name,
+          description: "",
+          project,
+          duration,
+          category: template.category,
+          status: dayOffset === 0 && Math.random() > 0.6 ? "in-progress" : "completed",
+          createdAt: new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            8 + Math.floor(Math.random() * 8),
+            Math.floor(Math.random() * 60)
+          ).toISOString(),
+        });
+      }
+    }
+  }
+
+  return logs;
+}
+
+export const taskLogs: TaskLog[] = generateTaskLogs();

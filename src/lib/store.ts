@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import { Employee, TimeEntry, ClockSession, Page } from "./types";
+import { Employee, TimeEntry, ClockSession, Page, TaskLog } from "./types";
 
 export interface AppState {
   currentUser: Employee | null;
@@ -9,6 +9,7 @@ export interface AppState {
   currentPage: Page;
   employees: Employee[];
   timeEntries: TimeEntry[];
+  taskLogs: TaskLog[];
   clockSession: ClockSession | null;
   sidebarOpen: boolean;
 }
@@ -23,6 +24,9 @@ export interface AppActions {
   updateTimeEntry: (id: string, updates: Partial<TimeEntry>) => void;
   addEmployee: (employee: Employee) => void;
   updateEmployee: (id: string, updates: Partial<Employee>) => void;
+  addTaskLog: (task: TaskLog) => void;
+  updateTaskLog: (id: string, updates: Partial<TaskLog>) => void;
+  deleteTaskLog: (id: string) => void;
   toggleSidebar: () => void;
 }
 

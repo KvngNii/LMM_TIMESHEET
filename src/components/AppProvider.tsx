@@ -2,10 +2,11 @@
 
 import { useState, useCallback, useMemo, ReactNode } from "react";
 import { AppContext, AppState } from "@/lib/store";
-import { Employee, TimeEntry, ClockSession, Page } from "@/lib/types";
+import { Employee, TimeEntry, TaskLog, ClockSession, Page } from "@/lib/types";
 import {
   employees as initialEmployees,
   timeEntries as initialTimeEntries,
+  taskLogs as initialTaskLogs,
 } from "@/lib/data";
 import { generateId } from "@/lib/utils";
 
@@ -16,6 +17,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
   const [timeEntries, setTimeEntries] =
     useState<TimeEntry[]>(initialTimeEntries);
+  const [taskLogs, setTaskLogs] = useState<TaskLog[]>(initialTaskLogs);
   const [clockSession, setClockSession] = useState<ClockSession | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -173,6 +175,23 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     [currentUser]
   );
 
+  const addTaskLog = useCallback((task: TaskLog) => {
+    setTaskLogs((prev) => [task, ...prev]);
+  }, []);
+
+  const updateTaskLog = useCallback(
+    (id: string, updates: Partial<TaskLog>) => {
+      setTaskLogs((prev) =>
+        prev.map((task) => (task.id === id ? { ...task, ...updates } : task))
+      );
+    },
+    []
+  );
+
+  const deleteTaskLog = useCallback((id: string) => {
+    setTaskLogs((prev) => prev.filter((task) => task.id !== id));
+  }, []);
+
   const toggleSidebar = useCallback(() => {
     setSidebarOpen((prev) => !prev);
   }, []);
@@ -184,6 +203,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       currentPage,
       employees,
       timeEntries,
+      taskLogs,
       clockSession,
       sidebarOpen,
       login,
@@ -195,6 +215,9 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       updateTimeEntry,
       addEmployee,
       updateEmployee,
+      addTaskLog,
+      updateTaskLog,
+      deleteTaskLog,
       toggleSidebar,
     }),
     [
@@ -203,6 +226,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       currentPage,
       employees,
       timeEntries,
+      taskLogs,
       clockSession,
       sidebarOpen,
       login,
@@ -214,6 +238,9 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       updateTimeEntry,
       addEmployee,
       updateEmployee,
+      addTaskLog,
+      updateTaskLog,
+      deleteTaskLog,
       toggleSidebar,
     ]
   );
